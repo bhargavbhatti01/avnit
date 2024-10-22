@@ -1,22 +1,17 @@
-import { Component,OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  imports: [RouterLink],
+  template: `
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a routerLink="/">Home</a>
+        <a routerLink="/login">Login</a>
+      </div>
+    </nav>
+  `
 })
-export class MenuComponent implements OnInit {
-
-  logo: string = 
-  "file:///C:/Users/ANKIT/Desktop/angular/project/avnit/src/assets/anglogo.png";
-  constructor(){
-
-  }
-
-  ngOnInit(): void {
-    
-  }
- 
-}
+export class MenuComponent {}
