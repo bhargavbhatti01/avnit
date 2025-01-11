@@ -1,1 +1,79 @@
+/* style.css */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: 'Raleway', sans-serif;
+}
+
+/* Enhance profile image styling */
+.img-circle {
+   -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/* Style for the profile card and text */
+.card-footer.text-muted {
+  font-size: 14px;
+  color: #777;
+}
+
+.card-body .card-title h3 {
+  color: #333;
+}
+
+/* Add some spacing to profile content */
+.card-body .card-text p {
+  color: #333;
+}
+
+/* Make badge-pill elements rounded */
+.badge-pill, .rounded-pill {
+  border-radius: 10px;
+}
+
+/* Styling for View Writer's Profile Button */
+.card-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card-footer a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Button styling */
+.btn-primary, .btn-danger, .btn-warning {
+  border-radius: 5px;
+}
+
+.btn {
+ -webkit-transition: background-color 0.3s ease-in-out;
+  -moz-transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Minimal adjustments for floating form labels (if used) */
+.form-floating label {
+    display: block;
+  }
+
+  @-webkit-keyframes fa-spin {  /* Vendor-prefixed version */
+    0% { -webkit-transform: rotate(0deg); transform: rotate(0); }
+    to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+}
+
+@keyframes fa-spin {  /* Standard version */
+    0% { -webkit-transform: rotate(0deg); transform: rotate(0); }
+    to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+}
 

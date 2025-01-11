@@ -1,0 +1,27 @@
+<div class="row mt-5">
+    <div class="col">
+        <div class="form-group">
+            <label>Post Title</label>
+            <input type="text" class="form-control"
+                   id="title" placeholder="Post Title" name="title"
+                   [(ngModel)]="title">
+        </div>
+
+        <div class="form-group">
+            <label>Post Content</label>
+            <!-- Menu for rich text editor toolbar -->
+            <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+            <!-- Editor area -->
+            <ngx-editor 
+                [editor]="editor" 
+                [(ngModel)]="content" 
+                [disabled]="false" 
+                [placeholder]="'Type here...'">
+            </ngx-editor>
+        </div>
+
+        <div class="form-group float-right">
+            <button (click)="createPost()" class="btn btn-warning round">Submit</button>
+        </div>
+    </div>
+</div>

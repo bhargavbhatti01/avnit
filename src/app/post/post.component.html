@@ -1,0 +1,29 @@
+<div class="card text-blank mt-3">
+  <div class="card-body">
+    <div class="card-title">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <p class="card-text">{{ post.content }}</p>
+      <h2 [innerHTML]="post?.title"></h2>
+    </div>
+    <div class="card-text">
+      <p [innerHTML]="post?.content.substring(0, 50) + '...'"></p>
+      <a [routerLink]="['/view', post.id]" class="btn btn-primary">Read More</a>
+    </div>
+  </div>
+
+  <div class="card-footer text-muted">
+    Posted on {{ post.created | date: 'MMM dd, yyyy' }}
+    <button 
+      *ngIf="user && user.uid === post?.owner" 
+      class="btn btn-danger btn-sm float-right" 
+      (click)="delete()">Delete</button>
+  </div>
+
+  <!-- View Writer's Profile Button -->
+  <a 
+    *ngIf="(user && post?.owner !== user.uid) || !user" 
+    class="card-footer text-muted btn btn-link" 
+    [routerLink]="['/profile', post.owner]">
+    View Writer's Profile
+  </a>
+</div>

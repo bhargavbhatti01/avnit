@@ -1,48 +1,47 @@
 import { Injectable } from '@angular/core';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, UserCredential } from 'firebase/auth';
-import md5 from 'md5';  // Import md5 for Gravatar URL
+import { auth, firestore } from '../firebase.config';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, UserCredential } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   constructor() {}
 
-  login(email: string, password: string) {
-    const auth = getAuth();  // Initialize Firebase Auth
-    return signInWithEmailAndPassword(auth, email, password);  // Return the promise from this method
-  }
-
-  signup(email: string, password: string, firstName: string, lastName: string) {
-    return new Promise<void>((resolve, reject) => {
-      const auth = getAuth();  // Initialize Firebase Auth
-      
+  signup(email: string, password: string, firstName: string, lastName: string): Promise<UserCredential> {
+    return new Promise<UserCredential>((resolve, reject) => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((response: UserCredential) => {
-          // Generate Gravatar URL based on email hash
-          const hash = md5(email.trim().toLowerCase());
-          const avatarURL = `https://www.gravatar.com/avatar/${hash}?s=128&d=identicon`;
+          const userId = response.user.uid;
+          const avatarURL = `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${userId}&radius=20&scale=100`;
 
-          // Update user profile with display name and avatar URL
           updateProfile(response.user, {
             displayName: `${firstName} ${lastName}`,
             photoURL: avatarURL
           })
           .then(() => {
-            resolve();  // Successfully updated profile, resolve the promise
+            setDoc(doc(firestore, 'users', userId), {
+              firstName,
+              lastName,
+              email,
+              photoURL: avatarURL,
+              interests: "",
+              bio: "",
+              hobbies: "",
+              createdAt: new Date()
+            })
+            .then(() => console.log("User data saved successfully"))
+            .then(() => resolve(response)) // Resolve with the correct type
+            .catch((error) => reject(`Error saving user data: ${error}`));
           })
-          .catch((error: Error) => {
-            reject(error);  // Reject with profile update error
-          });
+          .catch((error) => reject(`Error updating profile: ${error}`));
         })
-        .catch((error: any) => {
-          if (error.code === 'auth/email-already-in-use') {
-            reject(new Error('The email address is already in use. Please try another.'));
-          } else {
-          reject(error);
-          }  // Reject with signup error
-        });
+        .catch((error) => reject(`Signup error: ${error.message}`));
     });
+  }
+
+  login(email: string, password: string) {
+    return signInWithEmailAndPassword(auth, email, password);
   }
 }

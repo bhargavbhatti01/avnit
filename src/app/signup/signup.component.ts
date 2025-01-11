@@ -1,24 +1,8 @@
-import { Component, OnInit } from '@angular/core'; 
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { initializeApp } from 'firebase/app';  // Import initializeApp from firebase/app
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import md5 from 'md5'; // You need the md5 for Gravatar hash
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
-
-// Firebase configuration object
-const firebaseConfig = {
-  apiKey: "AIzaSyANwwbu0Q6HJ3CscUZV9qyvlcj4rvRx6EU",
-  authDomain: "avnit-f05d4.firebaseapp.com",
-  projectId: "avnit-f05d4",
-  storageBucket: "avnit-f05d4.appspot.com",
-  messagingSenderId: "495903492831",
-  appId: "1:495903492831:web:7fb0ce0e49a5900f36376a",
-  measurementId: "G-CR2PGKFF9F"
-};
-
-// Initialize Firebase app (this must be called before any Firebase service is used)
-const app = initializeApp(firebaseConfig);
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
@@ -29,49 +13,50 @@ const app = initializeApp(firebaseConfig);
 })
 export class SignupComponent implements OnInit {
   myForm: FormGroup;
-  message: string = ""
+  message: string = "";
   userError: any;
 
-  constructor(private fb: FormBuilder, public authservice: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.myForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required]
-    }, { validators: this.checkIfMatchingPasswords });
+      confirmPassword: ['', [Validators.required]]
+    }, {
+      validators: this.checkIfMatching("password", "confirmPassword")
+    });
   }
 
-  checkIfMatchingPasswords(group: FormGroup) {
-    const password = group.controls['password'];
-    const confirmPassword = group.controls['confirmPassword'];
+  ngOnInit(): void {}
 
-    if (password.value === confirmPassword.value) {
-      return null;
-    } else {
-      confirmPassword.setErrors({ notEqualToPassword: true });
-      return { notEqualToPassword: true };
+  checkIfMatching(passwordKey: string, confirmPasswordKey: string) {
+    return (group: FormGroup) => {
+      const password = group.controls[passwordKey];
+      const confirmPassword = group.controls[confirmPasswordKey];
+      if (password.value !== confirmPassword.value) {
+        confirmPassword.setErrors({ notEqualToPassword: true });
+      } else {
+        confirmPassword.setErrors(null);
+      }
+    };
+  }
+
+  onSubmit() {
+    if (this.myForm.invalid) {
+      return;
     }
+
+    const { email, password, firstName, lastName } = this.myForm.value;
+
+    this.authService.signup(email, password, firstName, lastName)
+      .then(() => {
+        this.message = "Signup successful! Redirecting...";
+        this.router.navigate(['/myblogs']);
+      })
+      .catch((error) => {
+        console.error("Signup error:", error); // Log the error
+      this.userError = error.message || "An unknown error occurred.";
+    });
   }
-
-  onSubmit(Form: FormGroup) { 
-    let email: string = this.myForm.value.email;
-    let password: string = this.myForm.value.password;
-    let firstName: string = this.myForm.value.firstName;
-    let lastName: string = this.myForm.value.lastName;
-
-    // Get the Firebase Auth service (now that the app is initialized)
-    const auth = getAuth(app);
-    
-    this.authservice.signup(email, password, firstName,lastName).then(() => {
-            
-              this.message = 'You have been signed up successfully. Please login.'
-
-            }).catch((error) => {
-              console.log(error);
-              this.userError = error;
-            });
-         }
-
-  ngOnInit() { }
 }

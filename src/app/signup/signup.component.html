@@ -1,73 +1,79 @@
-<div class="container">
-    <div class="row">
-        <div class="offset-md-2 col-sm-8">
-            <div class="card text-black border-0">
-                <div class="card-body">
-                    <div class="card-title text-center">
-                        <h5>Sign up for free</h5>
-                    </div>
-                    <div class="card-text">
-                        <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
-                            <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <input type="text" class="form-control"
-                                           placeholder="First Name"
-                                           formControlName='firstName'>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <input type="text" class="form-control"
-                                           placeholder="Last Name"
-                                           formControlName='lastName'>
-                                </div>
-                            </div>
- 
-                            <div class="alert alert-danger" *ngIf="(!myForm.controls['firstName'].valid && !myForm.controls['lastName'].valid) && (myForm.controls['firstName'].touched || myForm.controls['lastName'].touched)">
-                                First and Last name are required 
-                            </div>
- 
-                            <div class="group">
-                                <input type="email" placeholder="Enter your email"
-                                       class="form-control"
-                                       formControlName="email">
-                                <small class="form-text text-muted">
-                                    We'll never share your email with anyone else.
-                                </small>
-                            </div>
-                            <div class="alert alert-danger" *ngIf="!myForm.controls['email'].valid && myForm.controls['email'].touched">
-                                A valid email is required
-                            </div>
- 
-                            <div class="form-group">
-                                <input type="password" class="form-control"
-                                       placeholder="Enter your password"
-                                       formControlName="password">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control"
-                                       placeholder="Confirm password"
-                                       formControlName ="confirmPassword">
-                            </div>
- 
-                            <div class="alert alert-danger" *ngIf="!myForm.controls['password'].valid && myForm.controls['password'].touched">
-                                Password must be at least 8 characters long
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-block
-                                btn-warning" [disabled]="!myForm.valid"> Submit </button>
-                            </div>
-                        </form>
-                        {{myForm.controls['confirmPassword'].errors | json}}
-                    </div>
+<div class="container-fluid">
+    <div class="row background">
+      <!-- First half: slogan and image -->
+      <div class="col-sm-6 background-left p-5">
+        <h2>Don't just think! Blog It!</h2>
+      </div>
+  
+      <!-- Second half: Sign-up form -->
+      <div class="col-sm-6 background-right p-5">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card text-blank border-0">
+              <div class="card-body">
+                <div class="card-title text-center">
+                  <h5><b>Sign Up for Free</b></h5>
                 </div>
-            </div>
-
-            <div class="alert alert-success" *ngIf="message.length > 0" >
-                {{message}}
-            </div>
-
-                <div  class=" alert alert-danger" *ngIf = " userError" >
-                   {{userError.message}} 
+                <div class="card-text">
+                  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+                    
+                    <!-- First Name and Last Name -->
+                    <div class="form-row">
+                      <div class="form-group col-sm-6">
+                        <input type="text" placeholder="First Name" class="form-control" formControlName="firstName">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName">
+                      </div>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="myForm.get('firstName')?.invalid && myForm.get('firstName')?.touched">
+                      First name is required.
+                    </div>
+                    <div class="alert alert-danger" *ngIf="myForm.get('lastName')?.invalid && myForm.get('lastName')?.touched">
+                      Last name is required.
+                    </div>
+  
+                    <!-- Email -->
+                    <div class="form-group">
+                      <input type="email" placeholder="Enter your email" class="form-control" formControlName="email">
+                      <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="myForm.get('email')?.invalid && myForm.get('email')?.touched">
+                      A valid email is required.
+                    </div>
+  
+                    <!-- Password -->
+                    <div class="form-group">
+                      <input type="password" placeholder="Enter your password" class="form-control" formControlName="password">
+                    </div>
+                    <div class="alert alert-danger" *ngIf="myForm.get('password')?.invalid && myForm.get('password')?.touched">
+                      Password must be at least 8 characters long.
+                    </div>
+  
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                      <input type="password" placeholder="Confirm password" class="form-control" formControlName="confirmPassword">
+                    </div>
+                    <div class="alert alert-danger" *ngIf="myForm.get('confirmPassword')?.errors?.['notEqualToPassword'] && myForm.get('confirmPassword')?.touched">
+                        Passwords do not match.
+                      </div>
+                      
+  
+                    <!-- Submit Button -->
+                    <div class="form-group text-center">
+                      <button type="submit" class="btn btn-block btn-warning" [disabled]="!myForm.valid">Submit</button>
+                    </div>
+  
+                  </form>
                 </div>
+              </div>
+            </div>
+            <!-- Success or Error Messages -->
+            <div class="alert alert-success" *ngIf="message.length > 0">{{ message }}</div>
+            <div class="alert alert-danger" *ngIf="userError">{{ userError.message }}</div>
+          </div>
         </div>
+      </div>
     </div>
- </div>
+  </div>
+  

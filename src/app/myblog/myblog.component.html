@@ -1,0 +1,20 @@
+<div class="row mb-5">
+  <div class="col-sm-3 offset-sm-1">
+    <div class="card mt-5">
+      <img class="card-img-top" *ngIf="user?.photoURL; else defaultAvatar" 
+           [src]="user?.photoURL" alt="User Avatar" (error)="onImgError($event)">
+      <ng-template #defaultAvatar>
+        <img src="https://via.placeholder.com/128" alt="Default Avatar">
+      </ng-template>
+      <div class="card-body">
+        <h4 class="card-title">{{ user?.displayName || 'User' }}</h4>
+        <a [routerLink]="['/edit-profil', user?.uid]" class="btn btn-sm btn-primary">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <app-create (postCreated)="onPostCreated()"></app-create>
+    <app-post *ngFor="let post of post" [post]="post"
+   (onDelete)="onDelete()" ></app-post> <!-- Displays each post -->
+  </div>
+</div>

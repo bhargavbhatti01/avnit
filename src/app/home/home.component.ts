@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CapitalizePipe } from '../capitalize.pipe';
+import { SignupComponent } from "../signup/signup.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,CapitalizePipe],
+  imports: [CommonModule,  SignupComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

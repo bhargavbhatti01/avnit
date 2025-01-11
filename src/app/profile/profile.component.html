@@ -1,0 +1,99 @@
+<!--
+
+<div class="row">
+    <div class="offset-sm-1 col-sm-10">
+      <div class="card text-blank">
+        <div class="card-body">
+          <div class="card-title text-center">
+            <h3>Profile</h3>
+          </div>
+          <hr />
+          <div class="card-text">
+            <div class="row">
+              <div class="col-sm-3 text-center">
+                <img [src]="user.photoURL" height="250" width="250" class="img-circle" />
+              </div>
+              <div class="col-sm-9">
+                <h1>{{ user.firstName || 'No first name' }} {{ user.lastName || 'No last name' }}</h1>
+                <h4>{{ user.email }}</h4>
+                <h5>{{ user.bio }}</h5>
+                <p>{{ user.interests }}</p>
+                <span class="badge badge-pill badge-primary badge-lg ml-3" *ngFor="let hobby of user.hobbies">
+                  {{ hobby }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+=== Update Button =
+<button class="btn btn-warning" (click)="updateProfileData()">Update Profile</button>
+
+== Message Area ==
+<div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+  
+  <div class="row">
+    <div class="offset-sm-1 col-sm-10">
+      <div class="card text-blank">
+        <div class="card-body">
+          <div class="card-title">
+            <h3>Post by {{ user.firstName }} ({{ post.length }})</h3>
+          </div>
+          <div class="card-text">
+            <!-- Loop through posts and display them using app-post =>
+            <app-post *ngFor="let post of post" [post]="post"></app-post>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+-->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card text-blank">
+      <div class="card-body">
+        <div class="text-center">
+          <img
+            [src]="user.photoURL || 'default-placeholder.png'"
+            alt="Profile Picture"
+            class="img-circle"
+            height="150"
+            width="150"
+          />
+          <h3>{{ user.displayName || 'User Name' }}</h3>
+          <p>Email: {{ user.email || 'No email available' }}</p>
+          <p>Bio: {{ user.bio || 'No bio available' }}</p>
+          <h5 *ngIf="user.hobbies?.length">Hobbies:</h5>
+          <span
+            class="badge badge-pill badge-primary"
+            *ngFor="let hobby of user.hobbies"
+          >
+            {{ hobby }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-sm-12">
+    <h4>Posts by {{ user.displayName || 'User' }}</h4>
+    <div *ngFor="let post of post" class="card mb-2">
+      <div class="card-body">
+        <h5>{{ post.title }}</h5>
+        <p [innerHTML]="post.content"></p>
+        <a [routerLink]="['/post', post.id]" class="btn btn-primary">Read More</a>
+        <app-post *ngFor="let post of post" [post]="post"></app-post>
+      </div>
+
+    </div>
+  </div>
+</div>
+

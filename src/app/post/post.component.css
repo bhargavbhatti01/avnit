@@ -1,0 +1,8 @@
+.custom-button {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+}
+
+.custom-button:hover {
+    background-color: #45a049; /* Darker green when hovering */
+}

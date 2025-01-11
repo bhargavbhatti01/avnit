@@ -1,0 +1,15 @@
+<div *ngIf="post; else loadingTemplate" class="row mt-5">
+  <div class="col-sm-8 offset-sm-2">
+    <h1>{{ post.title }}</h1>
+    <div [innerHTML]="post.content"></div>
+    <!-- Pass postId to CommentsComponent -->
+    <app-comments [postId]="postId"></app-comments>
+  </div>
+</div>
+<ng-template #loadingTemplate>
+  <div class="row mt-5">
+    <div class="col-sm-8 offset-sm-2">
+      <p>Loading...</p>
+    </div>
+  </div>
+</ng-template>

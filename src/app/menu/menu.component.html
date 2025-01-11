@@ -1,6 +1,33 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand">
-        <img src="assets/avnit_logo.png" alt="Avnit Logo" width="100" height="auto">
-      </a>
-      
+  <a class="navbar-brand" href="#">
+    
+    <img src="assets/Avnit-Logo_1.png" alt="Avnit Logo" style="width: 60px; height: 20px;">
+
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active" data-toggle="collapse" data-target=".navbar-collapse" *ngIf="!loggedIn">
+        <a class="nav-link" routerLink="/home">Home</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" 
+      data-toggle="collapse" data-target=".navbar-collapse" 
+      *ngIf="loggedIn">
+        <a class="nav-link" routerLink="/myblogs">My Blogs</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" routerLinkActive="active" data-toggle="collapse" data-target=".navbar-collapse" *ngIf="!loggedIn">
+        <button class="btn btn-outline-light glossy-border" routerLink="/login">Login</button>
+      </li>
+      <li class="nav-item" *ngIf="loggedIn">
+        <a class="nav-link" [routerLink]="'/profile/' + userId">My Profile</a>
+      </li>
+      <li class="nav-item" *ngIf="loggedIn">
+        <a class="nav-link" routerLink="/" (click)="logout()">Log Out</a>
+      </li>
+    </ul>
+  </div>
 </nav>
